@@ -42,8 +42,6 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
 router.post("/", verifyToken, async (req: Request, res: Response) => {
     try {
         const { name, price, stock, categoryId } = req.body;
-
-        // Validasi input
         if (!name || !price || !stock || !categoryId) {
             return sendResponse(res, 400, "Missing required fields");
         }
