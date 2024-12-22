@@ -8,11 +8,7 @@ const router = express.Router();
 router.get("/", verifyToken, async (req: Request, res: Response) => {
     try {
         const transactions = await transactionService.getAllTransactions();
-        if (transactions.length > 0) {
-            sendResponse(res, 200, "Transactions fetched successfully", transactions);
-        } else {
-            sendResponse(res, 404, "Transactions not found");
-        }
+        sendResponse(res, 200, "Transactions fetched successfully", transactions);
     } catch (error: any) {
         sendResponse(res, 500, "Error fetching transactions", null, error.message);
     }
