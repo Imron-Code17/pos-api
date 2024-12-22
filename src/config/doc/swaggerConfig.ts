@@ -30,10 +30,7 @@ const swaggerOptions: SwaggerOptions = {
         ],
     },
     apis: [
-        "./src/api/product/*.ts",
-        "./src/api/category/*.ts",
-        "./src/api/user/*.ts",
-        "./src/api/transaction/*.ts",
+        "./src/api/**/*.ts",
     ],
 };
 
