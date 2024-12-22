@@ -6,6 +6,41 @@ import bcrypt from "bcrypt";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/users/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - role
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
+ */
 router.post("/register", async (req: Request, res: Response) => {
     try {
         const { name, email, password, role } = req.body;
@@ -27,37 +62,70 @@ router.post("/register", async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/users/login:
+ *   post:
+ *     summary: Login a user
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *       400:
+ *         description: Missing required fields
+ *       401:
+ *         description: Invalid password
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
 router.post("/login", async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
         const user = await getUserByEmail(email);
 
         if (!email || !password) {
-            sendResponse(res, 400, "Missing required fields");
+            return sendResponse(res, 400, "Missing required fields");
         }
         if (!user) {
-            sendResponse(res, 404, "User not found");
+            return sendResponse(res, 404, "User not found");
         }
 
         if (!user?.password) {
-            sendResponse(res, 404, "Password not set");
+            return sendResponse(res, 404, "Password not set");
         }
 
-        // const isPasswordValid = await bcrypt.compare(password, user!.password);
+        // const isPasswordValid = await bcrypt.compare(password, user.password);
 
         // if (!isPasswordValid) {
-        //     sendResponse(res, 401, "Invalid Password");
+        //     return sendResponse(res, 401, "Invalid Password");
         // }
 
-        const token = generateToken(user!.id, user!.email);
+        const token = generateToken(user.id, user.email);
 
         res.status(200).json({
             message: "User logged in successfully",
-            data: { id: user?.id, name: user?.name, email: user?.email, role: user?.role },
+            data: { id: user.id, name: user.name, email: user.email, role: user.role },
             token,
         });
     } catch (error: any) {
-        // res.status(error.status || 500).json({ message: error.message });
+        res.status(error.status || 500).json({ message: error.message });
     }
 });
 
