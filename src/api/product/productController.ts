@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/products:
+ * /products:
  *   get:
  *     summary: Get all products or products by category
  *     tags:
@@ -42,7 +42,7 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /products/{id}:
  *   get:
  *     summary: Get product by ID
  *     tags:
@@ -85,7 +85,7 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/products:
+ * /products:
  *   post:
  *     summary: Create a new product
  *     tags:
@@ -136,7 +136,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /products/{id}:
  *   put:
  *     summary: Update a product by ID
  *     tags:
@@ -205,7 +205,7 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /products/{id}:
  *   delete:
  *     summary: Delete a product by ID
  *     tags:
